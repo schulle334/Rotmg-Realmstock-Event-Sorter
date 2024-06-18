@@ -19,7 +19,7 @@ Die **Realmstock Event Sorter** Chrome-Erweiterung ermöglicht es Benutzern, Ere
 
 1. Klone dieses Repository:
    ```bash
-   git clone https://github.com/yourusername/realmstock-event-sorter.git
+   git clone https://github.com/schulle334/realmstock-event-sorter.git
    ```
 2. Öffne Google Chrome und gehe zu `chrome://extensions/`.
 3. Aktiviere den Entwicklermodus.
@@ -60,7 +60,7 @@ The **Realmstock Event Sorter** Chrome extension allows users to sort events on 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/realmstock-event-sorter.git
+   git clone https://github.com/schulle334/realmstock-event-sorter.git
    ```
 2. Open Google Chrome and go to `chrome://extensions/`.
 3. Enable Developer mode.
