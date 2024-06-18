@@ -1,5 +1,5 @@
 let sortMethod = 'default';
-let stylesApplied = true;
+let stylesApplied = fals;
 
 function sortEvents() {
   const eventPanels = document.querySelectorAll('.realmstock-panel');
