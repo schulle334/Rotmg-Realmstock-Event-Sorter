@@ -1,0 +1,23 @@
+{
+    "manifest_version": 3,
+    "name": "Realmstock Event Sorter",
+    "version": "1.0",
+    "description": "Sorts events on realmstock.com based on various criteria",
+    "permissions": ["activeTab", "scripting"],
+    "content_scripts": [
+      {
+        "matches": ["https://realmstock.com/pages/event-notifier"],
+        "js": ["content.js"],
+        "css": ["styles.css"],
+        "run_at": "document_end"
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "images/icon-16.png",
+        "48": "images/icon-48.png",
+        "128": "images/icon-128.png"
+      }
+    }
+  }
+  
