@@ -1,5 +1,5 @@
 let sortMethod = 'default';
-let stylesApplied = fals;
+let stylesApplied = false;
 
 function sortEvents() {
   const eventPanels = document.querySelectorAll('.realmstock-panel');
@@ -37,106 +37,31 @@ function sortEvents() {
   eventArray.forEach(panel => container.appendChild(panel));
 }
 
-function addGlobalStyles() {
-  const styles = `
-    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-    body {
-      background-color: rgba(44, 47, 51, 0.8); /* Making background transparent */
-      color: #ffffff;
-      font-family: 'Roboto', sans-serif;
-    }
-    .realmstock-panel {
-      background-color: rgba(35, 39, 42, 0.9); /* Making panels transparent */
-      border: 1px solid #99aab5;
-      border-radius: 5px;
-      margin-bottom: 10px;
-      padding: 10px;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s;
-    }
-    .realmstock-panel:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-      background-color: rgba(40, 43, 46, 1);
-    }
-    .realmstock-panel h3 {
-      color: #f0a500;
-    }
-    .button-toggle-styles {
-      background: linear-gradient(135deg, #ff416c, #ff4b2b);
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.3s;
-      font-size: 12px;
-    }
-    .button-toggle-styles:hover {
-      background: linear-gradient(135deg, #ff4b2b, #ff416c);
-      transform: scale(1.05);
-    }
-    #sort-control-panel {
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      background: rgba(26, 26, 29, 0.9);
-      padding: 10px;
-      border-radius: 5px;
-      z-index: 1000;
-      color: white;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease-in-out;
-      width: 200px;
-    }
-    #sort-control-panel:hover {
-      transform: translateY(-5px);
-    }
-    #sortMethod {
-      width: 100%;
-      padding: 5px;
-      border: none;
-      border-radius: 5px;
-      background-color: #333;
-      color: white;
-      margin-bottom: 10px;
-      transition: background-color 0.3s, transform 0.3s;
-      font-size: 12px;
-    }
-    #sortMethod:hover {
-      background-color: #444;
-      transform: scale(1.02);
-    }
-  `;
-
-  const styleSheet = document.createElement("style");
-  styleSheet.type = "text/css";
-  styleSheet.innerText = styles;
-  document.head.appendChild(styleSheet);
-  stylesApplied = true;
-}
-
-function removeGlobalStyles() {
-  const styleSheets = document.head.getElementsByTagName("style");
-  for (let i = styleSheets.length - 1; i >= 0; i--) {
-    if (styleSheets[i].innerText.includes('background-color: rgba(44, 47, 51, 0.8)')) {
-      document.head.removeChild(styleSheets[i]);
-    }
+function toggleStyles() {
+  if (stylesApplied) {
+    document.getElementById('style-element').remove();
+    document.getElementById('toggle-styles').textContent = 'Apply Styles';
+  } else {
+    const styleElement = document.createElement('link');
+    styleElement.id = 'style-element';
+    styleElement.rel = 'stylesheet';
+    styleElement.href = 'styles.css';
+    document.head.appendChild(styleElement);
+    document.getElementById('toggle-styles').textContent = 'Remove Styles';
   }
-  stylesApplied = false;
+  stylesApplied = !stylesApplied;
 }
-
-
-
-const targetNode = document.getElementById('history');
-const config = { childList: true, subtree: true };
-
-const observer = new MutationObserver((mutations) => {
-  observer.disconnect();
-  sortEvents();
-  observer.observe(targetNode, config);
-});
 
 window.addEventListener('load', () => {
+  const targetNode = document.getElementById('history');
+  const config = { childList: true, subtree: true };
+
+  const observer = new MutationObserver((mutations) => {
+    observer.disconnect();
+    sortEvents();
+    observer.observe(targetNode, config);
+  });
+
   if (targetNode) {
     observer.observe(targetNode, config);
     sortEvents();
@@ -160,18 +85,9 @@ window.addEventListener('load', () => {
       sortEvents();
     });
 
-    document.getElementById('toggle-styles').addEventListener('click', () => {
-      if (stylesApplied) {
-        removeGlobalStyles();
-        document.getElementById('toggle-styles').textContent = 'Apply Styles';
-      } else {
-        addGlobalStyles();
-        document.getElementById('toggle-styles').textContent = 'Remove Styles';
-      }
-    });
+    document.getElementById('toggle-styles').addEventListener('click', toggleStyles);
 
-    addGlobalStyles();
-
+    toggleStyles(); // Apply styles initially
   }
 
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
